@@ -5,6 +5,8 @@ import Login from "./pages/Login.jsx";
 import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
 import { AuthProvider } from "./context/AuthContext.jsx";
 import Dashboard from './pages/Dashboard.jsx';
+import Categories from './components/Categories.jsx';
+
 
 
 function App() {
@@ -27,7 +29,7 @@ function App() {
         <Route path="suppliers" element={<h1>suppliers</h1>} />
         <Route path="orders" element={<h1>orders</h1>} />
         <Route path="users" element={<h1>users</h1>} />
-        <Route path="categories" element={<h1>Categories</h1>} />
+        <Route path="categories" element={<Categories />} />
         <Route path="profile" element={<h1>profile</h1>} />
         <Route path="logout" element={<h1>logout</h1>} />
         

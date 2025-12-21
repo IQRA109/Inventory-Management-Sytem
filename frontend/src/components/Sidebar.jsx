@@ -8,7 +8,7 @@ const Sidebar = ()=>{
         {name: "Categories", path:"/admin-dashboard/categories",icon: <FaTable/>, isParent: false},
         {name: "Products", path:"/admin-dashboard/products",icon: <FaBox/>, isParent: false},
         {name: "Suppliers", path:"/admin-dashboard/suppliers",icon: <FaTruck/>, isParent: false},
-        {name: "orders", path:"/admin-dashboard/orders",icon: <FaShoppingCart/>, isParent: true},
+        {name: "Orders", path:"/admin-dashboard/orders",icon: <FaShoppingCart/>, isParent: true},
         {name: "Users", path:"/admin-dashboard/users",icon: <FaUsers/>, isParent: false},
         {name: "Profile", path:"/admin-dashboard/profile",icon: <FaCog/>, isParent: false},
         {name: "Logout", path:"/admin-dashboard/logout",icon: <FaSignOutAlt/>, isParent: false},
