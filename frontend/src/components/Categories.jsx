@@ -33,26 +33,50 @@ const Categories = () => {
 
     const handleSubmit= async(e) => {
         e.preventDefault();
-        const response = await axios.post(
-            "http://localhost:5000/api/category/add",
-            {
-                categoryName,
-                categoryDescription
-            },
-            {
-                headers:{
-                    Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}`,
+
+        if(editCategory){
+            const response = await axios.put(
+                `http://localhost:5000/api/category/${editCategory}`,
+                {
+                    categoryName,
+                    categoryDescription
+                },
+                {
+                    headers:{
+                        Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}`,
+                    }
                 }
+            );
+            if(response.data.success){
+                alert("Category Edited Successfully..");
+                setEditCategory(null);
+                fetchCategories();
+            } else{
+                //console.error("Error Editing Category: ", data);
+                alert("Error Editing Category. Please Try Again..")
             }
-        );
-        if(response.data.success){
-            alert("Category Added Successfully..");
-            setCategoryName("");
-            setCategoryDescription("");
-            fetchCategories();
         } else{
-            //console.error("Error adding Category: ", data);
-            alert("Error Adding Category. Please Try Again..")
+            const response = await axios.post(
+                "http://localhost:5000/api/category/add",
+                {
+                    categoryName,
+                    categoryDescription
+                },
+                {
+                    headers:{
+                        Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}`,
+                    }
+                }
+            );
+            if(response.data.success){
+                alert("Category Added Successfully..");
+                setCategoryName("");
+                setCategoryDescription("");
+                fetchCategories();
+            } else{
+                //console.error("Error adding Category: ", data);
+                alert("Error Adding Category. Please Try Again..")
+            }
         }
     }
 
@@ -104,7 +128,7 @@ const Categories = () => {
                                 />
                             </div>
 
-                            <div className = "flex ">
+                            <div className = "flex space-x-2">
                                 <button type = "submit" className= " w-full mt-2 rounded-md bg-green-500 text-white p-3 cursor-pointer hover:bg-green-600">
                                     {editCategory ? "Save Changes" : "Add Category"}
                                 </button>
@@ -114,7 +138,7 @@ const Categories = () => {
                                         <button
                                             type="button"
                                             className="w-full mt-2 rounded-md bg-red-500 text-white p-3 cursor-pointer hover:bg-red-600"
-                                            onClick={() =>{handleCancel}}
+                                            onClick={handleCancel}
                                         >
                                             Cancel
                                         </button>

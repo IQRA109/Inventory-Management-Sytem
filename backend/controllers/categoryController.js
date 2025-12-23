@@ -59,4 +59,35 @@ const getCategories = async(req, res)=>{
     }
 }
 
-export {addCategory, getCategories};
+const updateCategory = async(req,res) =>{
+    try{
+        const{id} = req.params;
+        const{categoryName, categoryDescription} = req.body;
+
+        const existingCategory = await Category.findById(id);
+        if(!existingCategory){
+            return res.status(404).json({
+                success: false,
+                message: "Category not found"
+            })
+        }
+
+        existingCategory.categoryName = categoryName || existingCategory.categoryName;
+        existingCategory.categoryDescription = categoryDescription || existingCategory.categoryDescription;
+
+        await existingCategory.save();
+        return res.status(200).json({
+            success: true,
+            message: "Category Updated Successfully!"
+        })
+
+    } catch(error) {
+        console.error("Error Updating Category:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server Error"
+        })
+    }
+}
+
+export {addCategory, getCategories, updateCategory};
