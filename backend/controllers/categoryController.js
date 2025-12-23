@@ -59,6 +59,30 @@ const getCategories = async(req, res)=>{
     }
 }
 
+const deleteCategory = async(req,res) =>{
+    try{
+        const{id} = req.params;
+        const existingCategory = await Category.findById(id);
+        if(!existingCategory){
+            return res.status(404).json({
+                success: false,
+                message: "Category not found"
+            })
+        }
+        await Category.findByIdAndDelete(id);
+        return res.status(200).json({
+            success: true,
+            message: "Category Deleted Successfully!"
+        })
+    } catch(error){
+        console.error("Error Deleting Category:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server Error"
+        })
+    }
+}
+
 const updateCategory = async(req,res) =>{
     try{
         const{id} = req.params;
@@ -72,10 +96,13 @@ const updateCategory = async(req,res) =>{
             })
         }
 
-        existingCategory.categoryName = categoryName || existingCategory.categoryName;
-        existingCategory.categoryDescription = categoryDescription || existingCategory.categoryDescription;
-
-        await existingCategory.save();
+        const updatedCategory = await Category.findByIdAndUpdate(
+            id,
+            {
+                categoryName, categoryDescription
+            },
+            { new: true }
+        )
         return res.status(200).json({
             success: true,
             message: "Category Updated Successfully!"
@@ -90,4 +117,4 @@ const updateCategory = async(req,res) =>{
     }
 }
 
-export {addCategory, getCategories, updateCategory};
+export {addCategory, getCategories, updateCategory, deleteCategory};

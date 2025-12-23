@@ -50,6 +50,8 @@ const Categories = () => {
             if(response.data.success){
                 alert("Category Edited Successfully..");
                 setEditCategory(null);
+                setCategoryName("");
+                setCategoryDescription("");
                 fetchCategories();
             } else{
                 //console.error("Error Editing Category: ", data);
@@ -92,6 +94,33 @@ const Categories = () => {
         setEditCategory(null);
         setCategoryName("");
         setCategoryDescription("");
+    }
+
+    const handleDelete = async(id) =>{
+        const confirmDelete = window.confirm(`Are you sure you want to delete this ${categoryName}`);
+        if(confirmDelete){
+            try{
+                const response = await axios.delete (
+                    `http://localhost:5000/api/category/${id}`,
+                    { headers:{
+                        Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}`,
+                    }}
+                )
+
+                if(response.data.success){
+                    alert("Category Deleted Successfully!");
+                    fetchCategories();
+
+                } else{
+                    //console.error("Error Deleting category:", data);
+                    alert("Error Deleting category. Please Try again.")
+                }
+
+            } catch(error){
+                    console.error("Error Deleting category:", error);
+                    alert("Error Deleting category. Please Try again.")
+            }
+        }
     }
 
     if(loading){
@@ -175,7 +204,12 @@ const Categories = () => {
                                             >
                                                 Edit
                                             </button>
-                                            <button className= " bg-red-500 text-white p-2 rounded-md hover:bg-red-700 hover:font-bold">Delete</button>
+                                            <button
+                                                className= " bg-red-500 text-white p-2 rounded-md hover:bg-red-700 hover:font-bold"
+                                                onClick={()=>{handleDelete(category._id)}}
+                                            >
+                                                Delete
+                                            </button>
                                         </td>
                                     </tr>
                                     )
