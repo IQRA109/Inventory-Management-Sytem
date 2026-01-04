@@ -7,7 +7,7 @@ const addSupplier= async(req, res)=>{
 
         const existingSupplier= await Supplier.findOne({email});
 
-        if(existingCategory){
+        if(existingSupplier){
             return res.status(400).json({
                 success: false,
                 message: "Supplier Already Exists."
@@ -35,4 +35,21 @@ const addSupplier= async(req, res)=>{
     }
 }
 
-export {addSupplier};
+const getSuppliers = async(req,res) =>{
+    try{
+        const suppliers = await Supplier.find();
+        return res.status(200).json({
+            success: true,
+            suppliers
+        })
+
+    } catch(error){
+        console.error("Error fetching Suppliers: ", error);
+        return res.status(500).json({
+            success: false,
+            message: "server error in suppliers"
+        })
+    }
+}
+
+export {addSupplier, getSuppliers};

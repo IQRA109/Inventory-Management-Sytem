@@ -11,6 +11,7 @@ const Categories = () => {
     const [editCategory, setEditCategory] = useState(null);
 
     const fetchCategories= async()=>{
+        setLoading(true);
             try{
                 const response = await axios.get("http://localhost:5000/api/category",{
                     headers:{
@@ -29,7 +30,7 @@ const Categories = () => {
     useEffect(()=>{
         
         fetchCategories();
-    })
+    }, [])
 
     const handleSubmit= async(e) => {
         e.preventDefault();
