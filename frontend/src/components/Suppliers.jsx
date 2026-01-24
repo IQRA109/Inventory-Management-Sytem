@@ -3,7 +3,8 @@ import axios from "axios";
 
 
 const Suppliers = () => {
-    const [addEditModal, setAddEditModal] = useState(null);
+    const [addModal, setAddModal] = useState(null);
+    const [editSupplier, setEditSupplier] = useState(null);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -21,30 +22,62 @@ const Suppliers = () => {
 
     const handleSubmit= async (e) =>{
         e.preventDefault();
-        try{
-            const response = await axios.post(
-                "http://localhost:5000/api/supplier/add",
-                formData,
-                {
-                headers:{
-                    Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}`,
-                    }});
-            if(response.data.success){
-                alert("Supplier Added Successfully..");
-                setAddEditModal(null);
-                setFormData({
-                    name: "",
-                    email: "",
-                    phone: "",
-                    address: "",
-                })
-            } else{
-                //console.error("Error adding Supplier:",data);
-                alert("Error Adding Supplier. Please Try Again..")
+        if(editSupplier)
+        {
+            try{
+                const response = await axios.put(
+                    `http://localhost:5000/api/supplier/${editSupplier}`,
+                    formData,
+                    {
+                    headers:{
+                        Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}`,
+                        }});
+                if(response.data.success){
+                    fetchSuppliers();
+                    alert("Supplier Edited Successfully..");
+                    setAddModal(false);
+                    setFormData({
+                        name: "",
+                        email: "",
+                        phone: "",
+                        address: "",
+                    })
+                } else{
+                    //console.error("Error adding Supplier:",data);
+                    alert("Error Adding Supplier. Please Try Again..")
+                }
+            } catch(error){
+                console.error("Error adding Supplier:",error.message);
+                alert("Error Adding Supplier. Please Try Again.")
             }
-        } catch(error){
-            console.error("Error adding Supplier:",error.message);
-            alert("Error Adding Supplier. Please Try Again.")
+        }
+        else{
+            try{
+                const response = await axios.post(
+                    "http://localhost:5000/api/supplier/add",
+                    formData,
+                    {
+                    headers:{
+                        Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}`,
+                        }});
+                if(response.data.success){
+                    fetchSuppliers()
+                    alert("Supplier Added Successfully..");
+                    setAddModal(false);
+                    setFormData({
+                        name: "",
+                        email: "",
+                        phone: "",
+                        address: "",
+                    })
+                } else{
+                    //console.error("Error adding Supplier:",data);
+                    alert("Error Adding Supplier. Please Try Again..")
+                }
+            } catch(error){
+                console.error("Error adding Supplier:",error.message);
+                alert("Error Adding Supplier. Please Try Again.")
+            }
         }
     }
 
@@ -68,13 +101,33 @@ const Suppliers = () => {
                 finally{
                     setLoading(false);
                 }
-            };
+    };
     
-        useEffect(()=>{
-            
-            fetchSuppliers();
-        }, [])
+    useEffect(()=>{
+        fetchSuppliers();
+    }, [])
+
+    const handleEdit = (supplier) => {
+        setFormData({
+        name: supplier.name,
+        email: supplier.email,
+        number: supplier.number,
+        address:supplier.address,
+        });
+        setEditSupplier(supplier._id);
+        setAddModal(true);
+    }
     
+    const closeModal =() =>{
+        setAddModal(false);
+        setFormData({
+            name : "",
+            email : "",
+            phone : "",
+            address : "",
+        })
+        setEditSupplier(null);
+    }
 
     return (
         <div className="w-full h-full flex flex-col gap-4 p-4">
@@ -83,8 +136,9 @@ const Suppliers = () => {
                 <input type="text" placeholder="Search" className="border p-1 bg-white rounded px-4" />
                 <button
                     className="px-4 py-1.5 bg-blue-600 text-white-rounded hover:bg-blue-600 hover:font-bold cursor-pointer"
-                    onClick={()=> setAddEditModal(1)}
+                    onClick={()=> setAddModal(true)}
                 >Add Supplier</button>
+            
             </div>
 
             {loading ? <div> Loading.....</div> :
@@ -92,6 +146,7 @@ const Suppliers = () => {
                 <table className= " w-full border-collapse border border-gray-300 mt-4">
                     <thead className= "">
                         <tr className="bg-gray-200">
+                            <th className= "border border-gray-300 p-2">Serial No</th>
                             <th className= "border border-gray-300 p-2">Supplier Name</th>
                             <th className= "border border-gray-300 p-2">Email</th>
                             <th className= "border border-gray-300 p-2">Phone Number</th>
@@ -101,17 +156,19 @@ const Suppliers = () => {
                     </thead>
 
                     <tbody className= "">
-                        {suppliers.map((supplier) =>(
+                        {suppliers.map((supplier, index) =>(
                             <tr key={(supplier._id)}>
-                                <td className = "border border-gray-300 p-2">{supplier.name}</td>
-                                <td className = "border border-gray-300 p-2">{supplier.email}</td>
-                                <td className = "border border-gray-300 p-2">{supplier.number}</td>
-                                <td className = "border border-gray-300 p-2">{supplier.address}</td>
-                                <td className = "border border-gray-300 p-2">
-                                    <button className ="px-2 py-1 bg-yellow-500 text-white rounded cursor-pointer mr-2">
+                                <td className = "border border-gray-300 p-2 text-center">{index +1}</td>
+                                <td className = "border border-gray-300 p-2 text-center">{supplier.name}</td>
+                                <td className = "border border-gray-300 p-2 text-center">{supplier.email}</td>
+                                <td className = "border border-gray-300 p-2 text-center">{supplier.number}</td>
+                                <td className = "border border-gray-300 p-2 text-center">{supplier.address}</td>
+                                <td className = "border border-gray-300 p-2 text-center">
+                                    <button className ="px-2 py-1 bg-blue-500 text-white rounded cursor-pointer mr-2"
+                                        onClick={() => handleEdit(supplier)}>
                                         Edit
                                     </button>
-                                    <button className ="px-2 py-1 bg-yellow-500 text-white rounded cursor-pointer">
+                                    <button className ="px-2 py-1 bg-red-500 text-white rounded cursor-pointer">
                                         Delete
                                     </button>
                                 </td>
@@ -123,14 +180,16 @@ const Suppliers = () => {
                 </table>
             )}
 
-            {addEditModal && (
+            {addModal && (
                 <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
                     <div className="bg-white p-4 rounded shadow-md w-1/3  relative">
                         <h1 className="text-xl font-bold "> Add Supplier </h1>
                         <button
                             className="absolute top-4 right-4 font-bold text-lg cursor-pointer"
-                            onClick={()=> setAddEditModal(null)}
-                        >X</button>
+                            onClick={closeModal}
+                        >
+                            X
+                        </button>
                         <form className="flex flex-col gap-4 mt-4" onSubmit={handleSubmit}>
                             <input
                                 type = "text"
@@ -165,7 +224,22 @@ const Suppliers = () => {
                                 placeholder="Address"
                                 className="border p-1 bg-white rounded px-4"
                             />
-                            <button className="px-4 py-1.5 bg-blue-500 text-white rounded cursor-pointer">Add Supplier</button>
+                            
+                            <div className = "flex space-x-2">
+                                <button type = "submit" className= " w-full mt-2 rounded-md bg-green-500 text-white p-3 cursor-pointer hover:bg-green-600">
+                                    {editSupplier ? "Save Changes" : "Add Supplier"}
+                                </button>
+                        
+                                { addModal && (
+                                    <button
+                                        type="button"
+                                        className="w-full mt-2 rounded-md bg-red-500 text-white p-3 cursor-pointer hover:bg-red-600"
+                                        onClick={closeModal}
+                                    >
+                                    Cancel
+                                    </button>
+                                )}
+                            </div>
                         </form>
                     </div>
                 </div>
