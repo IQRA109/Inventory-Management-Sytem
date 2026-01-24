@@ -9,8 +9,8 @@ const supplierSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    number : {
-        type: String,
+    phone : {
+        type: Number,
         required: true
     },
     address : {

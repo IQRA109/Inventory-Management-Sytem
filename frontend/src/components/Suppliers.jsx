@@ -8,7 +8,7 @@ const Suppliers = () => {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        number: "",
+        phone: "",
         address:"",
         product:"",
     });
@@ -114,7 +114,7 @@ const Suppliers = () => {
         setFormData({
         name: supplier.name,
         email: supplier.email,
-        number: supplier.number,
+        phone: supplier.phone,
         address:supplier.address,
         product:supplier.product,
         });
@@ -193,7 +193,7 @@ const Suppliers = () => {
                                 <td className = "border border-gray-300 p-2 text-center">{index +1}</td>
                                 <td className = "border border-gray-300 p-2 text-center">{supplier.name}</td>
                                 <td className = "border border-gray-300 p-2 text-center">{supplier.email}</td>
-                                <td className = "border border-gray-300 p-2 text-center">{supplier.number}</td>
+                                <td className = "border border-gray-300 p-2 text-center">{supplier.phone || supplier.number || "N/A"}</td>
                                 <td className = "border border-gray-300 p-2 text-center">{supplier.address}</td>
                                 <td className = "border border-gray-300 p-2 text-center">{supplier.product}</td>
                                 <td className = "border border-gray-300 p-2 text-center">
@@ -219,7 +219,7 @@ const Suppliers = () => {
                     <div className="bg-white p-4 rounded shadow-md w-1/3  relative">
                         <h1 className="text-xl font-bold "> {editSupplier ? "Edit Supplier" : "Add Supplier"} </h1>
                         <button
-                            className="absolute top-4 right-4 font-bold text-lg cursor-pointer"
+                            className="absolute top-4 right-4 hover:font-bold text-lg cursor-pointer text-red-500"
                             onClick={closeModal}
                         >
                             X
@@ -244,8 +244,8 @@ const Suppliers = () => {
                             />
                             <input
                                 type = "text"
-                                name = "number"
-                                value = {formData.number}
+                                name = "phone"
+                                value = {formData.phone}
                                 onChange={handleChange}
                                 placeholder="Phone No."
                                 className="border p-1 bg-white rounded px-4"

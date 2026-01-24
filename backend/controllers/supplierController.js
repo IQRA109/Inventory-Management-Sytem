@@ -3,7 +3,7 @@ import Supplier from "../models/Supplier.js";
 
 const addSupplier= async(req, res)=>{
     try{
-        const {name, email, number, address, product} = req.body;
+        const {name, email, phone, address, product} = req.body;
 
         const existingSupplier= await Supplier.findOne({email});
 
@@ -17,7 +17,7 @@ const addSupplier= async(req, res)=>{
         const newSupplier = new Supplier({
             name,
             email,
-            number,
+            phone,
             address,
             product,
         })
@@ -56,7 +56,7 @@ const getSuppliers = async(req,res) =>{
 const updateSupplier = async(req,res) =>{
     try{
         const{id} = req.params;
-        const{name, email, number, address, product} = req.body;
+        const{name, email, phone, address, product} = req.body;
 
         const existingSupplier = await Supplier.findById(id);
         if(!existingSupplier){
@@ -68,7 +68,7 @@ const updateSupplier = async(req,res) =>{
 
         const updatedSupplier = await Supplier.findByIdAndUpdate(
             id,
-            { name, email, number, address, product },
+            { name, email, phone, address, product },
             { new: true }
         )
         return res.status(200).json({
