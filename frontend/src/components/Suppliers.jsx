@@ -10,6 +10,7 @@ const Suppliers = () => {
         email: "",
         number: "",
         address:"",
+        product:"",
     });
 
     const handleChange = (e)=> {
@@ -41,6 +42,7 @@ const Suppliers = () => {
                         email: "",
                         phone: "",
                         address: "",
+                        product:"",
                     })
                 } else{
                     //console.error("Error adding Supplier:",data);
@@ -69,6 +71,7 @@ const Suppliers = () => {
                         email: "",
                         phone: "",
                         address: "",
+                        product:"",
                     })
                 } else{
                     //console.error("Error adding Supplier:",data);
@@ -113,9 +116,36 @@ const Suppliers = () => {
         email: supplier.email,
         number: supplier.number,
         address:supplier.address,
+        product:supplier.product,
         });
         setEditSupplier(supplier._id);
         setAddModal(true);
+    }
+    const handleDelete = async(id) =>{
+        const confirmDelete = window.confirm(`Are you sure you want to delete this supplier?`);
+        if(confirmDelete){
+            try{
+                const response = await axios.delete (
+                    `http://localhost:5000/api/supplier/${id}`,
+                    { headers:{
+                        Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}`,
+                    }}
+                )
+
+                if(response.data.success){
+                    alert("Supplier Deleted Successfully!");
+                    fetchSuppliers();
+
+                } else{
+                    //console.error("Error Deleting Supplier:", data);
+                    alert("Error Deleting Supplier. Please Try again.")
+                }
+
+            } catch(error){
+                    console.error("Error Deleting Supplier:", error);
+                    alert("Error Deleting Supplier. Please Try again.")
+            }
+        }
     }
     
     const closeModal =() =>{
@@ -125,6 +155,7 @@ const Suppliers = () => {
             email : "",
             phone : "",
             address : "",
+            product : "",
         })
         setEditSupplier(null);
     }
@@ -151,6 +182,7 @@ const Suppliers = () => {
                             <th className= "border border-gray-300 p-2">Email</th>
                             <th className= "border border-gray-300 p-2">Phone Number</th>
                             <th className= "border border-gray-300 p-2">Address</th>
+                            <th className= "border border-gray-300 p-2">Product</th>
                             <th className= "border border-gray-300 p-2">Action</th>
                         </tr>
                     </thead>
@@ -163,12 +195,14 @@ const Suppliers = () => {
                                 <td className = "border border-gray-300 p-2 text-center">{supplier.email}</td>
                                 <td className = "border border-gray-300 p-2 text-center">{supplier.number}</td>
                                 <td className = "border border-gray-300 p-2 text-center">{supplier.address}</td>
+                                <td className = "border border-gray-300 p-2 text-center">{supplier.product}</td>
                                 <td className = "border border-gray-300 p-2 text-center">
-                                    <button className ="px-2 py-1 bg-blue-500 text-white rounded cursor-pointer mr-2"
+                                    <button className ="w-20 px-2 py-1 bg-blue-500 text-white rounded cursor-pointer mr-2 hover:font-bold hover:bg-blue-700"
                                         onClick={() => handleEdit(supplier)}>
                                         Edit
                                     </button>
-                                    <button className ="px-2 py-1 bg-red-500 text-white rounded cursor-pointer">
+                                    <button className ="w-20 px-2 py-1 bg-red-500 text-white rounded cursor-pointer hover:font-bold hover:bg-red-600 "
+                                        onClick={()=> handleDelete(supplier._id)}>
                                         Delete
                                     </button>
                                 </td>
@@ -183,7 +217,7 @@ const Suppliers = () => {
             {addModal && (
                 <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
                     <div className="bg-white p-4 rounded shadow-md w-1/3  relative">
-                        <h1 className="text-xl font-bold "> Add Supplier </h1>
+                        <h1 className="text-xl font-bold "> {editSupplier ? "Edit Supplier" : "Add Supplier"} </h1>
                         <button
                             className="absolute top-4 right-4 font-bold text-lg cursor-pointer"
                             onClick={closeModal}
@@ -222,6 +256,15 @@ const Suppliers = () => {
                                 value = {formData.address}
                                 onChange={handleChange}
                                 placeholder="Address"
+                                className="border p-1 bg-white rounded px-4"
+                            />
+
+                            <input
+                                type = "text"
+                                name = "product"
+                                value = {formData.product}
+                                onChange={handleChange}
+                                placeholder="Product"
                                 className="border p-1 bg-white rounded px-4"
                             />
                             

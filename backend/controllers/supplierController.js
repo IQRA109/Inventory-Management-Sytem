@@ -3,7 +3,7 @@ import Supplier from "../models/Supplier.js";
 
 const addSupplier= async(req, res)=>{
     try{
-        const {name, email, number, address} = req.body;
+        const {name, email, number, address, product} = req.body;
 
         const existingSupplier= await Supplier.findOne({email});
 
@@ -19,6 +19,7 @@ const addSupplier= async(req, res)=>{
             email,
             number,
             address,
+            product,
         })
 
         await newSupplier.save();
@@ -55,7 +56,7 @@ const getSuppliers = async(req,res) =>{
 const updateSupplier = async(req,res) =>{
     try{
         const{id} = req.params;
-        const{name, email, number, address} = req.body;
+        const{name, email, number, address, product} = req.body;
 
         const existingSupplier = await Supplier.findById(id);
         if(!existingSupplier){
@@ -67,9 +68,7 @@ const updateSupplier = async(req,res) =>{
 
         const updatedSupplier = await Supplier.findByIdAndUpdate(
             id,
-            {
-                name, email, number, address
-            },
+            { name, email, number, address, product },
             { new: true }
         )
         return res.status(200).json({
@@ -86,4 +85,28 @@ const updateSupplier = async(req,res) =>{
     }
 }
 
-export {addSupplier, getSuppliers, updateSupplier};
+const deleteSupplier = async(req,res) =>{
+    try{
+        const{id} = req.params;
+        const existingSupplier = await Supplier.findById(id);
+        if(!existingSupplier){
+            return res.status(404).json({
+                success: false,
+                message: "Supplier not found"
+            })
+        }
+        await Supplier.findByIdAndDelete(id);
+        return res.status(200).json({
+            success: true,
+            message: "Supplier Deleted Successfully!"
+        })
+    } catch(error){
+        console.error("Error Deleting Supplier:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server Error"
+        })
+    }
+}
+
+export {addSupplier, getSuppliers, updateSupplier, deleteSupplier};

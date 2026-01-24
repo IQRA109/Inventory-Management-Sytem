@@ -159,7 +159,7 @@ const Categories = () => {
                             </div>
 
                             <div className = "flex space-x-2">
-                                <button type = "submit" className= " w-full mt-2 rounded-md bg-green-500 text-white p-3 cursor-pointer hover:bg-green-600">
+                                <button type = "submit" className= "w-20 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700 mr-2 hover:font-bold transition-none">
                                     {editCategory ? "Save Changes" : "Add Category"}
                                 </button>
 
@@ -167,7 +167,7 @@ const Categories = () => {
                                     editCategory && (
                                         <button
                                             type="button"
-                                            className="w-full mt-2 rounded-md bg-red-500 text-white p-3 cursor-pointer hover:bg-red-600"
+                                            className="w-full mt-2 rounded bg-red-500 text-white p-3 cursor-pointer hover:bg-red-600 hover:font-bold transition-none"
                                             onClick={handleCancel}
                                         >
                                             Cancel
@@ -200,13 +200,13 @@ const Categories = () => {
 
                                         <td className = "border border-gray-200 p-2">
                                             <button
-                                                className= " bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700 mr-2 hover:font-bold"
+                                                className= "w-20 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700 mr-2 hover:font-bold transition-none"
                                                 onClick={()=> {handleEdit(category)}}
                                             >
                                                 Edit
                                             </button>
                                             <button
-                                                className= " bg-red-500 text-white p-2 rounded-md hover:bg-red-700 hover:font-bold"
+                                                className= "w-20 bg-red-500 text-white p-2 rounded-md hover:bg-red-700 hover:font-bold transition-none"
                                                 onClick={()=>{handleDelete(category._id)}}
                                             >
                                                 Delete
