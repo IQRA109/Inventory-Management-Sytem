@@ -6,7 +6,8 @@ import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
 import { AuthProvider } from "./context/AuthContext.jsx";
 import Dashboard from './pages/Dashboard.jsx';
 import Categories from './components/Categories.jsx';
-import Suppliers from "./components/Suppliers.jsx"
+import Suppliers from "./components/Suppliers.jsx";
+import Products from "./components/Products.jsx";
 
 
 
@@ -26,7 +27,7 @@ function App() {
             }
           >
         <Route index element={<h1>Summary of Dashboard</h1>} />
-        <Route path="products" element={<h1>products</h1>} />
+        <Route path="products" element={<Products/>} />
         <Route path="suppliers" element={<Suppliers/>} />
         <Route path="orders" element={<h1>orders</h1>} />
         <Route path="users" element={<h1>users</h1>} />

@@ -86,6 +86,7 @@ const Suppliers = () => {
 
     const [loading, setLoading] = useState(false);
     const [suppliers,setSuppliers] = useState([]);
+    const [filteredSuppliers, setFilteredSuppliers] = useState([]);
 
     const fetchSuppliers= async()=>{
         setLoading(true)
@@ -96,6 +97,7 @@ const Suppliers = () => {
                         }
                     });
                     setSuppliers(response.data.suppliers);
+                    setFilteredSuppliers(response.data.suppliers);
                 } catch(error){
                     console.error("Error fetching suppliers:", error)
                     setLoading(false);
@@ -147,6 +149,20 @@ const Suppliers = () => {
             }
         }
     }
+    /*const handleSearch = (e) =>{
+        setFilteredSuppliers(
+            suppliers.filter(supplier) =>
+                supplier.name.toLowerCase.includes(e.target.value.toLowerCase())
+        )
+    } */
+    const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    const filtered = suppliers.filter((supplier) =>
+        supplier.name.toLowerCase().includes(value) ||
+        supplier.email.toLowerCase().includes(value)
+    );
+    setFilteredSuppliers(filtered);
+};
     
     const closeModal =() =>{
         setAddModal(false);
@@ -164,7 +180,7 @@ const Suppliers = () => {
         <div className="w-full h-full flex flex-col gap-4 p-4">
             <h1 className="text-2xl font-bold ">Supplier Management</h1>
             <div className="flex justify-between items-center">
-                <input type="text" placeholder="Search" className="border p-1 bg-white rounded px-4" />
+                <input type="text" placeholder="Search" className="border p-1 bg-white rounded px-4" onChange={handleSearch} />
                 <button
                     className="px-4 py-1.5 bg-blue-600 text-white-rounded hover:bg-blue-600 hover:font-bold cursor-pointer"
                     onClick={()=> setAddModal(true)}
@@ -174,6 +190,7 @@ const Suppliers = () => {
 
             {loading ? <div> Loading.....</div> :
             (
+                <div>
                 <table className= " w-full border-collapse border border-gray-300 mt-4">
                     <thead className= "">
                         <tr className="bg-gray-200">
@@ -188,7 +205,7 @@ const Suppliers = () => {
                     </thead>
 
                     <tbody className= "">
-                        {suppliers.map((supplier, index) =>(
+                        {filteredSuppliers.map((supplier, index) =>(
                             <tr key={(supplier._id)}>
                                 <td className = "border border-gray-300 p-2 text-center">{index +1}</td>
                                 <td className = "border border-gray-300 p-2 text-center">{supplier.name}</td>
@@ -212,6 +229,8 @@ const Suppliers = () => {
 
                     </tbody>
                 </table>
+                {filteredSuppliers.length === 0 && <div> No records</div>}
+                </div>
             )}
 
             {addModal && (
