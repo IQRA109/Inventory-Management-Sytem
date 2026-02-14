@@ -6,6 +6,7 @@ const Products = () => {
     const [openModal, setOpenModal] = useState(false);
     const [categories, setCategories] = useState([]);
     const[suppliers, setSuppliers] = useState([]);
+    const [editProduct, setEditProduct] = useState(null);
 
     const fetchProducts = async() =>{
                 try{
@@ -14,8 +15,8 @@ const Products = () => {
                             Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}`,
                         }
                     });
-                    setSuppliers(response.data.suppliers);
-                    setCategories(response.data.categories);
+                    setSuppliers(response.data.suppliers || []);
+                    setCategories(response.data.categories || []);
                 } catch(error){
                     console.error("Error fetching suppliers:", error)
                 }
@@ -37,13 +38,16 @@ const Products = () => {
                     >Add Product</button>
             </div>
 
-            ( openModal &&(
+            { openModal &&(
                 <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
                     <div className="bg-white p-4 rounded shadow-md w-1/3  relative">
                         <h1 className="text-xl font-bold "> {editProduct ? "Edit Product" : "Add Product"} </h1>
                         <button
                             className="absolute top-4 right-4 hover:font-bold text-lg cursor-pointer text-red-500"
-                            onClick={setOpenModal(false)}
+                            onClick={() => {
+                                setOpenModal(false);
+                                setEditProduct(null);
+                            }}
                         >
                             X
                         </button>
@@ -88,36 +92,48 @@ const Products = () => {
                             <div>
                                 <select name = "Category">
                                     <option value = "">Select Category</option>
-
+                                    {
+                                        categories && categories.map((category)=>(
+                                            <option key={category._id} value ={category._id}>
+                                                {category.name}
+                                            </option>
+                                        ))
+                                    }
                                 </select>
                             </div>
 
                             <div>
                                 <select name = "Supplier">
                                     <option value = "">Select Supplier</option>
-
+                                    {
+                                        suppliers && suppliers.map((supplier)=>(
+                                            <option key={supplier._id} value ={supplier._id}>
+                                                {supplier.name}
+                                            </option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             
                             <div className = "flex space-x-2">
                                 <button type = "submit" className= " w-full mt-2 rounded-md bg-green-500 text-white p-3 cursor-pointer hover:bg-green-600">
-                                    {editSupplier ? "Save Changes" : "Add Supplier"}
+                                    Add Product
                                 </button>
                         
-                                { addModal && (
+                                
                                     <button
                                         type="button"
                                         className="w-full mt-2 rounded-md bg-red-500 text-white p-3 cursor-pointer hover:bg-red-600"
-                                        onClick={closeModal}
+                                        onClick={setOpenModal(false)}
                                     >
                                     Cancel
                                     </button>
-                                )}
+                            
                             </div>
                         </form>
                     </div>
                 </div>
-            ))
+            )}
         </div>
 
     )

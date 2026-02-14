@@ -5,7 +5,8 @@ import authRoutes from './routes/auth.js';
 import dotenv from "dotenv";
 dotenv.config();
 import categoryRoutes from "./routes/category.js";
-import supplierRoutes from "./routes/supplier.js"
+import supplierRoutes from "./routes/supplier.js";
+import productRoutes from "./routes/product.js";
 
 
 const app = express();
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/supplier", supplierRoutes);
+app.use("/api/product", productRoutes);
 
 const PORT = 5000;
 app.listen(PORT, "0.0.0.0", () => {
