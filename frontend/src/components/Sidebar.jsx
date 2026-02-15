@@ -42,7 +42,7 @@ const Sidebar = () => {
                                 className={({ isActive }) => `
                                     flex items-center p-3 rounded-xl transition-all duration-200 group
                                     ${isActive 
-                                        ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20" 
+                                        ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20"
                                         : "hover:bg-slate-800 hover:text-white"}
                                 `}
                             >

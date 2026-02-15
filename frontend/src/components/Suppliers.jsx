@@ -230,13 +230,13 @@ const Suppliers = () => {
                                     <td className="p-4">
                                         <div className="flex justify-center items-center gap-3">
                                             <button 
-                                                className="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-md hover:bg-blue-600 hover:text-white transition-all text-sm font-bold shadow-sm"
+                                                className="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-md hover:bg-blue-600 hover:text-blue transition-all text-sm font-bold shadow-sm"
                                                 onClick={() => handleEdit(supplier)}
                                             >
                                                 Edit
                                             </button>
                                             <button 
-                                                className="bg-red-50 text-red-600 px-3 py-1.5 rounded-md hover:bg-red-600 hover:text-white transition-all text-sm font-bold shadow-sm"
+                                                className="bg-red-50 text-red-600 px-3 py-1.5 rounded-md hover:bg-red-600 hover:text-blue transition-all text-sm font-bold shadow-sm"
                                                 onClick={() => handleDelete(supplier._id)}
                                             >
                                                 Delete

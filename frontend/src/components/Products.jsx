@@ -37,6 +37,8 @@ const Products = () => {
 
             setCategories(catRes.data.categories || []);
             setSuppliers(supRes.data.suppliers || []);
+            console.log("Categories data:", catRes.data);
+            console.log("Categories data:", supRes.data);
         } catch (error) {
             console.error("Error fetching selection data:", error);
         }
@@ -210,14 +212,24 @@ return (
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Category</label>
-                                        <select name="category" value={formData.category} onChange={handleChange} className="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none bg-slate-50/50 cursor-pointer transition-all appearance-none" required>
-                                            <option value="">Select Category</option>
-                                            {categories.map(cat => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
+                                        <select 
+                                            name="category" 
+                                            value={formData.category} 
+                                            onChange={handleChange} 
+                                            className="w-full p-3.5 border border-slate-200 rounded-xl text-slate-900 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none bg-white cursor-pointer transition-all" 
+                                            required
+                                        >
+                                            <option value="" style={{color: '#1e293b'}}>Select Category</option>
+                                            {categories.map(cat => (
+                                                <option key={cat._id} value={cat._id} style={{color: '#1e293b', backgroundColor: 'white'}}>
+                                                    {cat.categoryName || cat.name}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div>
                                         <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Supplier</label>
-                                        <select name="supplier" value={formData.supplier} onChange={handleChange} className="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none bg-slate-50/50 cursor-pointer transition-all appearance-none" required>
+                                        <select name="supplier" value={formData.supplier} onChange={handleChange} className="w-full p-3.5 border border-slate-200 rounded-xl text-slate-900 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none bg-slate-50/50 cursor-pointer transition-all" required>
                                             <option value="">Select Supplier</option>
                                             {suppliers.map(sup => <option key={sup._id} value={sup._id}>{sup.name}</option>)}
                                         </select>
