@@ -11,6 +11,7 @@ import Products from "./components/Products.jsx";
 
 
 
+
 function App() {
   
   return (
@@ -33,7 +34,7 @@ function App() {
         <Route path="users" element={<h1>users</h1>} />
         <Route path="categories" element={<Categories />} />
         <Route path="profile" element={<h1>profile</h1>} />
-        <Route path="logout" element={<h1>logout</h1>} />
+        
         
         
       </Route>

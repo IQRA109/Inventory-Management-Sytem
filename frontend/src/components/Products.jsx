@@ -68,12 +68,13 @@ const Products = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem("inventory-system-user-token")}` }
             };
             
-            const response = await axios.post("http://localhost:5000/api/products/add", formData, config);
+            const response = await axios.post("http://localhost:5000/api/product/add", formData, config);
             
             if (response.data.success) {
                 alert("Product Added Successfully!");
                 closeModal();
-                fetchProducts(); 
+                fetchProducts();
+
             }
         } catch (error) {
             console.error("Error adding product:", error);
@@ -149,8 +150,10 @@ return (
                                         </div>
                                     </td>
                                     <td className="p-5">
-                                        <span className="text-[10px] font-black px-2.5 py-1 rounded-md bg-blue-50 text-blue-600 border border-blue-100">
-                                            {product.category?.name || "GENERAL"}
+                                        <span className="text-[10px] font-black px-2.5 py-1 rounded-md bg-blue-50 text-blue-600 border border-blue-100 uppercase">
+                                            {typeof product.category === 'object' 
+                                                ? (product.category?.categoryName || product.category?.name) 
+                                                : "GENERAL"}
                                         </span>
                                     </td>
                                     <td className="p-5">

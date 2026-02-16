@@ -13,12 +13,13 @@ const Sidebar = () => {
         { name: "Orders", path: "/admin-dashboard/orders", icon: <FaShoppingCart />, isParent: false },
         { name: "Users", path: "/admin-dashboard/users", icon: <FaUsers />, isParent: false },
         { name: "Profile", path: "/admin-dashboard/profile", icon: <FaCog />, isParent: false },
+
     ];
 
     const handleLogout = () => {
         localStorage.removeItem("inventory-system-user-token");
         navigate("/login");
-    };
+    }
 
     return (
         <div className="flex flex-col h-screen bg-[#0f172a] text-slate-300 w-20 md:w-64 fixed border-r border-slate-800 shadow-2xl transition-all duration-300 z-50">
@@ -65,7 +66,7 @@ const Sidebar = () => {
                     
                     {/* Logout Button */}
                     <li>
-                        <button 
+                        <button
                             onClick={handleLogout}
                             className="w-full flex items-center p-3 rounded-xl transition-all duration-200 hover:bg-rose-500/10 hover:text-rose-500 group"
                         >
